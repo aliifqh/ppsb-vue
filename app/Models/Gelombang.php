@@ -43,6 +43,22 @@ class Gelombang extends Model
         return $this->hasMany(Pembayaran::class);
     }
 
+    // Many-to-Many relationship dengan Unit
+    public function units()
+    {
+        return $this->belongsToMany(Unit::class, 'gelombang_unit')
+                    ->withPivot([
+                        'kuota_maksimal', 
+                        'kuota_terisi', 
+                        'biaya_administrasi', 
+                        'biaya_daftar_ulang',
+                        'aktif',
+                        'persyaratan_khusus',
+                        'diskon'
+                    ])
+                    ->withTimestamps();
+    }
+
     // Scopes
     public function scopeAktif($query)
     {
@@ -74,5 +90,37 @@ class Gelombang extends Model
     public function getTotalBiayaAttribute()
     {
         return $this->biaya_administrasi + $this->biaya_daftar_ulang;
+    }
+
+    // Helper methods untuk unit management
+    public function getUnitPivot($unitId)
+    {
+        return $this->units()->where('unit_id', $unitId)->first()?->pivot;
+    }
+
+    public function isUnitAvailable($unitId)
+    {
+        $pivot = $this->getUnitPivot($unitId);
+        if (!$pivot || !$pivot->aktif) return false;
+        
+        return $pivot->kuota_terisi < $pivot->kuota_maksimal;
+    }
+
+    public function getUnitSisaKuota($unitId)
+    {
+        $pivot = $this->getUnitPivot($unitId);
+        if (!$pivot) return 0;
+        
+        return max(0, $pivot->kuota_maksimal - $pivot->kuota_terisi);
+    }
+
+    public function incrementUnitKuota($unitId)
+    {
+        $this->units()->where('unit_id', $unitId)->increment('kuota_terisi');
+    }
+
+    public function decrementUnitKuota($unitId)
+    {
+        $this->units()->where('unit_id', $unitId)->decrement('kuota_terisi');
     }
 }

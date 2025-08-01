@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
-import { Github, Mail, Twitter, Linkedin, Coffee, Heart } from 'lucide-vue-next';
+import { Coffee, Heart } from 'lucide-vue-next';
 
 // Animated text effect
 const animatedText = ref('Coming Soon');
-const currentIndex = ref(0);
 const isTyping = ref(true);
 
 onMounted(() => {
@@ -71,6 +70,20 @@ onMounted(() => {
                     Website kami sedang dalam tahap pengembangan yang serius. 
                     Tim developer kami sedang bekerja keras untuk memberikan pengalaman terbaik untuk Anda.
                 </p>
+            </div>
+
+            <!-- Formulir Pendaftaran Button -->
+            <div class="mb-8">
+                <a 
+                    href="/formulir" 
+                    class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-teal-500 to-blue-600 text-white text-lg font-semibold rounded-xl hover:from-teal-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
+                    <span class="mr-2">📝</span>
+                    Daftar Sekarang
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
             </div>
 
             <!-- Progress Bar -->

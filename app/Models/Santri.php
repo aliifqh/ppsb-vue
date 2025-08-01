@@ -10,6 +10,8 @@ class Santri extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'santri';
+
     protected $fillable = [
         'gelombang_id',
         'nomor_pendaftaran',
@@ -22,12 +24,13 @@ class Santri extends Model
         'asal_sekolah',
         'anak_ke',
         'jumlah_saudara',
+        'whatsapp',
     ];
 
     protected $casts = [
-        'tanggal_lahir' => 'date',
         'anak_ke' => 'integer',
         'jumlah_saudara' => 'integer',
+        'tanggal_lahir' => 'date',
     ];
 
     // Relationships
@@ -43,7 +46,7 @@ class Santri extends Model
 
     public function dokumen()
     {
-        return $this->hasOne(Dokumen::class);
+        return $this->hasMany(DokumenSantri::class);
     }
 
     public function pembayaran()
@@ -72,7 +75,10 @@ class Santri extends Model
     // Accessors
     public function getUmurAttribute()
     {
-        return $this->tanggal_lahir->age;
+        if ($this->tanggal_lahir) {
+            return \Carbon\Carbon::parse($this->tanggal_lahir)->age;
+        }
+        return 0;
     }
 
     public function getNamaLengkapAttribute()
@@ -87,23 +93,29 @@ class Santri extends Model
 
         static::creating(function ($santri) {
             if (empty($santri->nomor_pendaftaran)) {
-                $santri->nomor_pendaftaran = self::generateNomorPendaftaran();
+                $santri->nomor_pendaftaran = self::generateNomorPendaftaran($santri->unit);
             }
         });
     }
 
-    public static function generateNomorPendaftaran()
+    public static function generateNomorPendaftaran($unit = null)
     {
-        $year = date('Y');
-        $lastSantri = self::whereYear('created_at', $year)->latest()->first();
+        // Generate 4 huruf random unik
+        $randomLetters = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 4));
+        
+        // Get nomor urut berdasarkan unit
+        $unitCode = strtoupper($unit ?? 'GEN');
+        
+        // Cari nomor terakhir berdasarkan unit
+        $lastSantri = self::where('unit', $unit)->latest()->first();
 
-        if ($lastSantri) {
-            $lastNumber = (int) substr($lastSantri->nomor_pendaftaran, -4);
+        if ($lastSantri && preg_match('/PSB-' . $unitCode . '-(\d{4})/', $lastSantri->nomor_pendaftaran, $matches)) {
+            $lastNumber = (int) $matches[1];
             $newNumber = $lastNumber + 1;
         } else {
             $newNumber = 1;
         }
 
-        return sprintf('PPSB%s%04d', $year, $newNumber);
+        return sprintf('PSB-%s-%04d-%s', $unitCode, $newNumber, $randomLetters);
     }
 }

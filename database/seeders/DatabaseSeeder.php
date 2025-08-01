@@ -62,5 +62,11 @@ class DatabaseSeeder extends Seeder
 
         // Create additional users for testing
         User::factory(5)->create();
+
+        // Seed Units dan Gelombang-Unit
+        $this->call([
+            UnitSeeder::class,
+            GelombangUnitSeeder::class,
+        ]);
     }
 }

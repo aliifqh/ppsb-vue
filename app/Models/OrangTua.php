@@ -25,6 +25,7 @@ class OrangTua extends Model
         'wa_ayah',
         'wa_ibu',
         'alamat',
+        'penghasilan_ortu',
         'provinsi_id',
         'kabupaten_id',
         'kecamatan_id',
