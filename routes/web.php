@@ -36,13 +36,6 @@ Route::get('formulir', [FormulirController::class, 'index'])->name('formulir.ind
 Route::post('formulir', [FormulirController::class, 'store'])->name('formulir.store');
 Route::get('formulir/success/{nomorPendaftaran}', [FormulirController::class, 'success'])->name('formulir.success');
 
-// Santri Routes
-Route::prefix('santri')->name('santri.')->group(function () {
-    Route::get('login', [SantriController::class, 'login'])->name('login');
-    Route::post('check', [SantriController::class, 'check'])->name('check');
-    Route::get('dashboard/{nomor_pendaftaran}', [SantriController::class, 'dashboard'])->name('dashboard');
-    Route::post('logout', [SantriController::class, 'logout'])->name('logout');
-});
-
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+require __DIR__.'/santri.php';
