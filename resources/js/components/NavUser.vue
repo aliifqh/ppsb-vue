@@ -57,10 +57,13 @@ const user = page.props.auth.user as User;
                 </DropdownMenuTrigger>
                 
                 <DropdownMenuContent
-                    class="w-80 min-w-56 rounded-xl shadow-xl border border-gray-600 bg-gray-800 backdrop-blur-sm"
-                    side="bottom"
-                    align="end"
-                    :side-offset="8"
+                    class="w-full max-w-[calc(100vw-2rem)] rounded-xl shadow-xl border border-gray-600 bg-gray-800 backdrop-blur-sm z-50"
+                    side="top"
+                    align="start"
+                    :side-offset="4"
+                    :align-offset="0"
+                    :avoid-collisions="false"
+                    :force-mount="false"
                 >
                     <UserMenuContent :user="user" />
                 </DropdownMenuContent>

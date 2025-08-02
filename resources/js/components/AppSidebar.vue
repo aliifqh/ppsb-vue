@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, Home, LayoutGrid, Users, Settings, FileText, User, Bell, HelpCircle } from 'lucide-vue-next';
+import { BookOpen, Calendar, Folder, Home, LayoutGrid, Users, User, Bell, HelpCircle, CreditCard, MessageCircle } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { ref, onMounted, onUnmounted } from 'vue';
 
@@ -22,15 +22,20 @@ const sidebarNavItems: NavItem[] = [
         icon: Users,
     },
     {
-        title: 'Laporan',
-        href: '/laporan',
-        icon: FileText,
+        title: 'Pembayaran',
+        href: '/pembayaran',
+        icon: CreditCard,
     },
     {
-        title: 'Settings',
-        href: '/settings',
-        icon: Settings,
+        title: 'Gelombang',
+        href: '/gelombang',
+        icon: Calendar,
     },
+    {
+        title: 'Whatsapp Integrasi',
+        href: '/whatsapp-integrasi',
+        icon: MessageCircle,
+    }
 ];
 
 const footerNavItems: NavItem[] = [

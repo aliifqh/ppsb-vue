@@ -18,7 +18,7 @@ defineProps<Props>();
 
 <template>
     <DropdownMenuLabel class="p-0 font-normal">
-        <div class="flex items-center gap-2 px-3 py-3 text-left text-sm bg-gray-800 rounded-t-lg">
+        <div class="flex items-center gap-2 px-3 py-2 text-left text-sm bg-gray-700 rounded-t-lg border-b border-gray-600">
             <UserInfo :user="user" :show-email="true" />
         </div>
     </DropdownMenuLabel>
@@ -26,22 +26,22 @@ defineProps<Props>();
     <DropdownMenuGroup>
         <DropdownMenuItem 
             :as-child="true"
-            class="px-3 py-2.5 text-gray-100 hover:text-emerald-300 hover:bg-gray-700 focus:text-emerald-300 focus:bg-gray-700"
+            class="px-3 py-2 text-gray-100 hover:text-emerald-300 hover:bg-gray-700 focus:text-emerald-300 focus:bg-gray-700"
         >
             <Link class="flex items-center w-full" :href="route('profile.edit')" prefetch as="button">
                 <Settings class="mr-3 h-4 w-4 text-gray-300 group-hover:text-emerald-400" />
-                <span class="font-medium">Settings</span>
+                <span class="font-medium text-sm">Settings</span>
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator class="border-gray-600" />
     <DropdownMenuItem 
         :as-child="true"
-        class="px-3 py-2.5 text-gray-100 hover:text-red-300 hover:bg-gray-700 focus:text-red-300 focus:bg-gray-700"
+        class="px-3 py-2 text-gray-100 hover:text-red-300 hover:bg-gray-700 focus:text-red-300 focus:bg-gray-700"
     >
         <Link class="flex items-center w-full" method="post" :href="route('logout')" @click="handleLogout" as="button">
             <LogOut class="mr-3 h-4 w-4 text-gray-300 group-hover:text-red-400" />
-            <span class="font-medium">Log out</span>
+            <span class="font-medium text-sm">Log out</span>
         </Link>
     </DropdownMenuItem>
 </template>

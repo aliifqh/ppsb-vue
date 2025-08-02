@@ -17,6 +17,18 @@ Route::get('santri', function () {
     return Inertia::render('admin/Santri');
 })->middleware(['auth', 'verified'])->name('santri');
 
+Route::get('pembayaran', function () {
+    return Inertia::render('admin/Pembayaran');
+})->middleware(['auth', 'verified'])->name('pembayaran');
+
+Route::get('gelombang', function () {
+    return Inertia::render('admin/Gelombang');
+})->middleware(['auth', 'verified'])->name('gelombang');
+
+Route::get('whatsapp-integrasi', function () {
+    return Inertia::render('admin/WhatsappIntegrasi');
+})->middleware(['auth', 'verified'])->name('whatsapp-integrasi');
+
 //Public Routes
 
 // Formulir Pendaftaran Routes
