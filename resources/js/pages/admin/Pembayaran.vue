@@ -2,7 +2,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import { CreditCard, DollarSign, TrendingUp, CheckCircle, Clock, XCircle, Search, Filter, Download, Eye, Edit } from 'lucide-vue-next';
+import { CreditCard, DollarSign, CheckCircle, Clock, XCircle, Download, Eye, Edit, Plus, Banknote, Receipt } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -98,10 +98,10 @@ const filteredPembayaran = computed(() => {
 
 const getStatusColor = (status: string) => {
     switch (status) {
-        case 'Lunas': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
-        case 'Pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
-        case 'Belum Bayar': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
-        default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400';
+        case 'Lunas': return 'success';
+        case 'Pending': return 'warning';
+        case 'Belum Bayar': return 'danger';
+        default: return 'secondary';
     }
 };
 
@@ -134,220 +134,261 @@ const totalPending = computed(() => {
         .filter(item => item.status === 'Pending')
         .reduce((total, item) => total + item.jumlah, 0);
 });
+
+const stats = computed(() => [
+    { title: 'Total Transaksi', value: pembayaran.value.length, icon: CreditCard, color: 'info', bgColor: 'bg-gradient-info' },
+    { title: 'Lunas', value: pembayaran.value.filter(p => p.status === 'Lunas').length, icon: CheckCircle, color: 'success', bgColor: 'bg-gradient-success' },
+    { title: 'Pending', value: pembayaran.value.filter(p => p.status === 'Pending').length, icon: Clock, color: 'warning', bgColor: 'bg-gradient-warning' },
+    { title: 'Total Pendapatan', value: formatCurrency(totalPendapatan.value), icon: DollarSign, color: 'primary', bgColor: 'bg-gradient-primary' },
+]);
+
+const paymentMethods = computed(() => [
+    { name: 'Transfer Bank', count: pembayaran.value.filter(p => p.metode === 'Transfer Bank').length, icon: Banknote, color: 'info' },
+    { name: 'Cash', count: pembayaran.value.filter(p => p.metode === 'Cash').length, icon: Receipt, color: 'success' },
+    { name: 'Belum Bayar', count: pembayaran.value.filter(p => p.status === 'Belum Bayar').length, icon: XCircle, color: 'danger' },
+]);
 </script>
 
 <template>
     <Head title="Manajemen Pembayaran - PPSB Al-Mukmin Ngruki" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="space-y-6">
+        <div class="container-fluid py-4">
             <!-- Header Section -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Pembayaran</h1>
-                    <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola transaksi pembayaran santri baru</p>
-                </div>
-                <div class="flex items-center space-x-3 mt-4 sm:mt-0">
-                    <button class="inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                        <Download class="w-4 h-4 mr-2" />
-                        Export
-                    </button>
-                    <button class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                        <CreditCard class="w-4 h-4 mr-2" />
-                        Input Pembayaran
-                    </button>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <div class="row">
+                                <div class="col-6 d-flex align-items-center">
+                                    <h6 class="mb-0">Manajemen Pembayaran</h6>
+                                    <p class="text-secondary text-sm mb-0 ms-2">Kelola transaksi pembayaran santri baru</p>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <ArgonButton color="secondary" variant="outline" size="sm" class="me-2">
+                                        <Download class="me-2" />
+                                        Export
+                                    </ArgonButton>
+                                    <ArgonButton color="info" variant="gradient" size="sm">
+                                        <Plus class="me-2" />
+                                        Input Pembayaran
+                                    </ArgonButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                            <CreditCard class="w-6 h-6 text-blue-600" />
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Transaksi</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ pembayaran.length }}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                            <CheckCircle class="w-6 h-6 text-green-600" />
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Lunas</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ pembayaran.filter(p => p.status === 'Lunas').length }}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
-                            <Clock class="w-6 h-6 text-yellow-600" />
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Pending</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ pembayaran.filter(p => p.status === 'Pending').length }}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                            <DollarSign class="w-6 h-6 text-purple-600" />
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Pendapatan</p>
-                            <p class="text-lg font-bold text-gray-900 dark:text-white">{{ formatCurrency(totalPendapatan) }}</p>
+            <div class="row">
+                <div v-for="stat in stats" :key="stat.title" class="col-xl-3 col-sm-6 mb-4">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">{{ stat.title }}</p>
+                                        <h5 class="font-weight-bolder mb-0">{{ stat.value }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div :class="`icon icon-shape ${stat.bgColor} shadow text-center border-radius-md`">
+                                        <component :is="stat.icon" class="text-lg opacity-10" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Revenue Summary -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Ringkasan Pendapatan</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                            <div class="flex items-center">
-                                <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
-                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Pendapatan Lunas</span>
-                            </div>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">{{ formatCurrency(totalPendapatan) }}</span>
+            <!-- Revenue Summary & Payment Methods -->
+            <div class="row">
+                <!-- Revenue Summary -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <h6>Ringkasan Pendapatan</h6>
                         </div>
-                        <div class="flex items-center justify-between p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                            <div class="flex items-center">
-                                <div class="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
-                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Pendapatan Pending</span>
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon icon-shape icon-sm bg-gradient-success shadow text-center"></div>
+                                    <div class="ms-3">
+                                        <h6 class="text-dark mb-0">Pendapatan Lunas</h6>
+                                        <p class="text-secondary text-sm mb-0">{{ formatCurrency(totalPendapatan) }}</p>
+                                    </div>
+                                </div>
+                                <ArgonBadge color="success" variant="gradient" size="sm">
+                                    {{ pembayaran.filter(p => p.status === 'Lunas').length }} transaksi
+                                </ArgonBadge>
                             </div>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">{{ formatCurrency(totalPending) }}</span>
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon icon-shape icon-sm bg-gradient-warning shadow text-center"></div>
+                                    <div class="ms-3">
+                                        <h6 class="text-dark mb-0">Pendapatan Pending</h6>
+                                        <p class="text-secondary text-sm mb-0">{{ formatCurrency(totalPending) }}</p>
+                                    </div>
+                                </div>
+                                <ArgonBadge color="warning" variant="gradient" size="sm">
+                                    {{ pembayaran.filter(p => p.status === 'Pending').length }} transaksi
+                                </ArgonBadge>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Metode Pembayaran</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-600 dark:text-gray-400">Transfer Bank</span>
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ pembayaran.filter(p => p.metode === 'Transfer Bank').length }}</span>
+                <!-- Payment Methods -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <h6>Metode Pembayaran</h6>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-600 dark:text-gray-400">Cash</span>
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ pembayaran.filter(p => p.metode === 'Cash').length }}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-600 dark:text-gray-400">Belum Bayar</span>
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ pembayaran.filter(p => p.status === 'Belum Bayar').length }}</span>
+                        <div class="card-body p-3">
+                            <div v-for="method in paymentMethods" :key="method.name" class="d-flex justify-content-between mb-3">
+                                <div class="d-flex align-items-center">
+                                    <component :is="method.icon" :class="`text-${method.color} me-2`" />
+                                    <span class="text-sm font-weight-bold">{{ method.name }}</span>
+                                </div>
+                                <ArgonBadge :color="method.color" variant="gradient" size="sm">
+                                    {{ method.count }}
+                                </ArgonBadge>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Filters -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="relative">
-                        <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input
-                            v-model="searchQuery"
-                            type="text"
-                            placeholder="Cari nama atau NIS..."
-                            class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                        />
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <ArgonInput
+                                        v-model="searchQuery"
+                                        placeholder="Cari nama atau NIS..."
+                                        icon="fas fa-search"
+                                        size="sm"
+                                    />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <select
+                                        v-model="selectedStatus"
+                                        class="form-select form-select-sm"
+                                    >
+                                        <option value="all">Semua Status</option>
+                                        <option value="Lunas">Lunas</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Belum Bayar">Belum Bayar</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <select
+                                        v-model="selectedMetode"
+                                        class="form-select form-select-sm"
+                                    >
+                                        <option value="all">Semua Metode</option>
+                                        <option value="Transfer Bank">Transfer Bank</option>
+                                        <option value="Cash">Cash</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <select
-                        v-model="selectedStatus"
-                        class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                    >
-                        <option value="all">Semua Status</option>
-                        <option value="Lunas">Lunas</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Belum Bayar">Belum Bayar</option>
-                    </select>
-                    
-                    <select
-                        v-model="selectedMetode"
-                        class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                    >
-                        <option value="all">Semua Metode</option>
-                        <option value="Transfer Bank">Transfer Bank</option>
-                        <option value="Cash">Cash</option>
-                    </select>
                 </div>
             </div>
 
             <!-- Table -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-100 dark:border-slate-700 overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-gray-50 dark:bg-slate-700">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Santri</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Jumlah</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Metode</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tanggal</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Keterangan</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
-                            <tr v-for="item in filteredPembayaran" :key="item.id" class="hover:bg-gray-50 dark:hover:bg-slate-700">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div>
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">{{ item.nama_santri }}</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">{{ item.nis }}</div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ formatCurrency(item.jumlah) }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ item.metode }}</div>
-                                    <div v-if="item.bank !== '-'" class="text-xs text-gray-400 dark:text-gray-500">{{ item.bank }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span :class="`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(item.status)}`">
-                                        <component :is="getStatusIcon(item.status)" class="w-3 h-3 mr-1" />
-                                        {{ item.status }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ item.tanggal }}</div>
-                                    <div class="text-xs text-gray-400 dark:text-gray-500">{{ item.waktu }}</div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">{{ item.keterangan }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex items-center space-x-2">
-                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
-                                            <Eye class="w-4 h-4" />
-                                        </button>
-                                        <button class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300">
-                                            <Edit class="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <h6>Data Pembayaran</h6>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Santri</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Jumlah</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Metode</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Keterangan</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in filteredPembayaran" :key="item.id">
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div>
+                                                        <ArgonAvatar
+                                                            :img="`https://ui-avatars.com/api/?name=${item.nama_santri}&background=random`"
+                                                            size="sm"
+                                                            class="me-3"
+                                                        />
+                                                    </div>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">{{ item.nama_santri }}</h6>
+                                                        <p class="text-xs text-secondary mb-0">{{ item.nis }}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">{{ formatCurrency(item.jumlah) }}</p>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                <span class="badge badge-sm bg-gradient-secondary">{{ item.metode }}</span>
+                                                <p v-if="item.bank !== '-'" class="text-xs text-secondary mb-0">{{ item.bank }}</p>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <ArgonBadge :color="getStatusColor(item.status)" variant="gradient" size="sm">
+                                                    <component :is="getStatusIcon(item.status)" class="me-1" />
+                                                    {{ item.status }}
+                                                </ArgonBadge>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">{{ item.tanggal }}</span>
+                                                <p class="text-xs text-secondary mb-0">{{ item.waktu }}</p>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">{{ item.keterangan }}</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <div class="btn-group" role="group">
+                                                    <ArgonButton color="info" variant="text" size="sm" class="mb-0">
+                                                        <Eye />
+                                                    </ArgonButton>
+                                                    <ArgonButton color="success" variant="text" size="sm" class="mb-0">
+                                                        <Edit />
+                                                    </ArgonButton>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Empty State -->
-                <div v-if="filteredPembayaran.length === 0" class="text-center py-12">
-                    <CreditCard class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Tidak ada data pembayaran</h3>
-                    <p class="text-gray-500 dark:text-gray-400">Coba ubah filter atau input pembayaran baru.</p>
+            </div>
+
+            <!-- Empty State -->
+            <div v-if="filteredPembayaran.length === 0" class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body text-center py-5">
+                            <CreditCard class="text-secondary mb-3" style="font-size: 3rem;" />
+                            <h6 class="text-dark mb-2">Tidak ada data pembayaran</h6>
+                            <p class="text-secondary text-sm mb-0">Coba ubah filter atau input pembayaran baru.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

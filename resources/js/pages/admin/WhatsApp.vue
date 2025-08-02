@@ -2,7 +2,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import { Coffee, Heart, Zap, MessageCircle } from 'lucide-vue-next';
+import { Coffee, Heart, Zap, MessageCircle, Shield, Users, Smartphone } from 'lucide-vue-next';
 import { ref, onMounted } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -34,130 +34,139 @@ onMounted(() => {
     
     animateCoffee();
 });
+
+const features = [
+    { icon: MessageCircle, title: 'Auto Reply', description: 'Balasan otomatis yang cerdas', color: 'success' },
+    { icon: Zap, title: 'Real-time', description: 'Notifikasi instan', color: 'info' },
+    { icon: Heart, title: 'User Friendly', description: 'Interface yang mudah', color: 'primary' },
+    { icon: Shield, title: 'Secure', description: 'Keamanan terjamin', color: 'warning' },
+    { icon: Users, title: 'Multi User', description: 'Dukungan multi pengguna', color: 'secondary' },
+    { icon: Smartphone, title: 'Mobile Ready', description: 'Responsif di semua device', color: 'danger' },
+];
 </script>
 
 <template>
     <Head title="WhatsApp Integration - Coming Soon" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="min-h-[70vh] flex items-center justify-center p-6">
-            <!-- Background Pattern -->
-            <div class="absolute inset-0 overflow-hidden opacity-5">
-                <div class="absolute top-20 left-20 w-32 h-32 bg-green-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-                <div class="absolute bottom-20 right-20 w-40 h-40 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
-                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
+        <div class="container-fluid py-4">
+            <!-- Header Section -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <div class="row">
+                                <div class="col-6 d-flex align-items-center">
+                                    <h6 class="mb-0">WhatsApp Integration</h6>
+                                    <p class="text-secondary text-sm mb-0 ms-2">Fitur komunikasi terdepan</p>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <ArgonButton color="success" variant="gradient" size="sm">
+                                        <MessageCircle class="me-2" />
+                                        Coming Soon
+                                    </ArgonButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Main Content -->
-            <div class="relative z-10 text-center max-w-2xl mx-auto">
-                <!-- WhatsApp Icon with Animation -->
-                <div class="mb-8 relative">
-                    <div class="relative inline-block">
-                        <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl shadow-2xl flex items-center justify-center mb-4 mx-auto transform hover:scale-110 transition-transform duration-300">
-                            <MessageCircle class="w-12 h-12 text-white" />
-                        </div>
-                        <!-- Floating notification dots -->
-                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full animate-bounce flex items-center justify-center">
-                            <span class="text-xs text-white font-bold">3</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Title Section -->
-                <div class="mb-8">
-                    <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-4">
-                        WhatsApp Integration
-                    </h1>
-                    <p class="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-                        Fitur WhatsApp sedang dalam pengembangan intensif. 
-                        Kami berkomitmen memberikan pengalaman komunikasi terbaik untuk Anda.
-                    </p>
-                </div>
-
-                <!-- Progress Section -->
-                <div class="mb-8 max-w-md mx-auto">
-                    <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-3">
-                        <span class="flex items-center">
-                            <Zap class="w-4 h-4 mr-2 text-yellow-500" />
-                            Development Progress
-                        </span>
-                        <span class="font-semibold">5%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                        <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-2000 ease-out relative" style="width: 5%">
-                            <div class="absolute inset-0 bg-white opacity-30 animate-pulse"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Features Preview -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                    <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/20">
-                        <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mb-3 mx-auto">
-                            <MessageCircle class="w-5 h-5 text-green-600" />
-                        </div>
-                        <h3 class="font-semibold text-gray-800 dark:text-white text-sm mb-1">Auto Reply</h3>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">Balasan otomatis yang cerdas</p>
-                    </div>
-                    
-                    <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/20">
-                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-3 mx-auto">
-                            <Zap class="w-5 h-5 text-blue-600" />
-                        </div>
-                        <h3 class="font-semibold text-gray-800 dark:text-white text-sm mb-1">Real-time</h3>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">Notifikasi instan</p>
-                    </div>
-                    
-                    <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/20">
-                        <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-3 mx-auto">
-                            <Heart class="w-5 h-5 text-purple-600" />
-                        </div>
-                        <h3 class="font-semibold text-gray-800 dark:text-white text-sm mb-1">User Friendly</h3>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">Interface yang mudah</p>
-                    </div>
-                </div>
-
-                <!-- Coffee Section -->
-                <div class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl p-6 shadow-lg border border-amber-200/50 dark:border-amber-700/30">
-                    <div class="flex items-center justify-center mb-4">
-                        <div class="relative">
-                            <div class="w-16 h-16 bg-gradient-to-br from-amber-600 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
-                                <Coffee class="w-8 h-8 text-white" />
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body text-center py-5">
+                            <!-- WhatsApp Icon with Animation -->
+                            <div class="mb-4">
+                                <div class="d-inline-block position-relative">
+                                    <div class="icon icon-shape icon-xl bg-gradient-success shadow text-center border-radius-xl mx-auto mb-3">
+                                        <MessageCircle class="text-white opacity-10" style="font-size: 2rem;" />
+                                    </div>
+                                    <!-- Floating notification dots -->
+                                    <div class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger">
+                                        3
+                                    </div>
+                                </div>
                             </div>
-                            <!-- Coffee steam animation -->
-                            <div class="absolute -top-2 -left-1 w-2 h-4 bg-amber-300 rounded-full opacity-60 animate-pulse"></div>
-                            <div class="absolute -top-1 -right-1 w-1.5 h-3 bg-amber-300 rounded-full opacity-60 animate-pulse animation-delay-500"></div>
+
+                            <!-- Title Section -->
+                            <div class="mb-4">
+                                <h2 class="text-gradient text-primary mb-3">WhatsApp Integration</h2>
+                                <p class="text-secondary mb-0">
+                                    Fitur WhatsApp sedang dalam pengembangan intensif. 
+                                    Kami berkomitmen memberikan pengalaman komunikasi terbaik untuk Anda.
+                                </p>
+                            </div>
+
+                            <!-- Progress Section -->
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-sm text-secondary">
+                                        <Zap class="me-1" />
+                                        Development Progress
+                                    </span>
+                                    <span class="text-sm font-weight-bold">5%</span>
+                                </div>
+                                <ArgonProgress value="5" color="success" size="sm" />
+                            </div>
+
+                            <!-- Features Preview -->
+                            <div class="row mb-4">
+                                <div v-for="feature in features" :key="feature.title" class="col-md-4 col-lg-2 mb-3">
+                                    <div class="card">
+                                        <div class="card-body p-3 text-center">
+                                            <div :class="`icon icon-shape icon-sm bg-gradient-${feature.color} shadow text-center border-radius-md mb-2`">
+                                                <component :is="feature.icon" class="text-white opacity-10" />
+                                            </div>
+                                            <h6 class="text-dark text-sm font-weight-bold mb-1">{{ feature.title }}</h6>
+                                            <p class="text-secondary text-xs mb-0">{{ feature.description }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Coffee Section -->
+                            <div class="card bg-gradient-warning">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center justify-content-center mb-3">
+                                        <div class="position-relative">
+                                            <div class="icon icon-shape icon-lg bg-gradient-warning shadow text-center border-radius-xl">
+                                                <Coffee class="text-white opacity-10" style="font-size: 1.5rem;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <h6 class="text-dark mb-2">Support Developer</h6>
+                                    <p class="text-secondary text-sm mb-3">
+                                        Jika Anda menyukai fitur ini, pertimbangkan untuk membeli secangkir kopi untuk developer kami. 
+                                        Setiap donasi membantu kami terus berinovasi! ☕
+                                    </p>
+                                    
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <ArgonButton color="warning" variant="gradient" size="sm">
+                                            <Coffee class="me-2" />
+                                            Buy Me a Coffee
+                                        </ArgonButton>
+                                        <ArgonButton color="success" variant="gradient" size="sm">
+                                            <Heart class="me-2" />
+                                            Donate
+                                        </ArgonButton>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="mt-4">
+                                <p class="text-sm text-secondary mb-1">
+                                    Dikembangkan dengan ❤️ oleh Aliifqh
+                                </p>
+                                <p class="text-xs text-secondary italic mb-0">
+                                    "Kopi adalah bahasa universal developer. Setiap baris kode dibayar dengan secangkir kopi."
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">
-                        Support Developer
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                        Jika Anda menyukai fitur ini, pertimbangkan untuk membeli secangkir kopi untuk developer kami. 
-                        Setiap donasi membantu kami terus berinovasi! ☕
-                    </p>
-                    
-                    <div class="flex justify-center space-x-3">
-                        <a href="https://wa.me/6285888100108" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                            <Coffee class="w-4 h-4 mr-2" />
-                            Buy Me a Coffee
-                        </a>
-                        <a href="https://wa.me/6285888100108" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg hover:from-green-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                            <Heart class="w-4 h-4 mr-2" />
-                            Donate
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Footer -->
-                <div class="mt-8 text-center">
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                        Dikembangkan dengan ❤️ oleh Aliifqh
-                    </p>
-                    <p class="text-xs text-gray-400 dark:text-gray-500 italic">
-                        "Kopi adalah bahasa universal developer. Setiap baris kode dibayar dengan secangkir kopi." 
-                    </p>
                 </div>
             </div>
         </div>
@@ -165,30 +174,10 @@ onMounted(() => {
 </template>
 
 <style scoped>
-@keyframes pulse {
-    0%, 100% {
-        opacity: 0.6;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.1);
-    }
-}
-
-.animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.animation-delay-2000 {
-    animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-    animation-delay: 4s;
-}
-
-.animation-delay-500 {
-    animation-delay: 0.5s;
+.text-gradient {
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 </style>

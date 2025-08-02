@@ -7,16 +7,24 @@ import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
 import { initializeTheme } from './composables/useAppearance';
 
+// Import Argon Dashboard
+import ArgonDashboard from './components/argon/argon-dashboard';
+import './components/argon/assets/css/nucleo-icons.css';
+import './components/argon/assets/css/nucleo-svg.css';
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
-            .use(plugin)
+        const app = createApp({ render: () => h(App, props) });
+        
+        app.use(plugin)
             .use(ZiggyVue)
-            .mount(el);
+            .use(ArgonDashboard); // Add Argon Dashboard
+        
+        app.mount(el);
     },
     progress: {
         color: '#4B5563',

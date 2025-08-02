@@ -2,7 +2,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import { Users, Search, Plus, Filter, Edit, Trash2, Eye, Download } from 'lucide-vue-next';
+import { Users, Plus, Edit, Trash2, Eye, Download, UserCheck, Clock, AlertCircle } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -38,183 +38,213 @@ const filteredSantri = computed(() => {
 
 const getStatusColor = (status: string) => {
     switch (status) {
-        case 'Lunas': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
-        case 'Pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
-        case 'Belum Bayar': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
-        default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400';
+        case 'Lunas': return 'success';
+        case 'Pending': return 'warning';
+        case 'Belum Bayar': return 'danger';
+        default: return 'secondary';
     }
 };
+
+const getStatusIcon = (status: string) => {
+    switch (status) {
+        case 'Lunas': return UserCheck;
+        case 'Pending': return Clock;
+        case 'Belum Bayar': return AlertCircle;
+        default: return Users;
+    }
+};
+
+const stats = computed(() => [
+    { title: 'Total Santri', value: santri.value.length, icon: Users, color: 'info', bgColor: 'bg-gradient-info' },
+    { title: 'Lunas', value: santri.value.filter(s => s.status === 'Lunas').length, icon: UserCheck, color: 'success', bgColor: 'bg-gradient-success' },
+    { title: 'Pending', value: santri.value.filter(s => s.status === 'Pending').length, icon: Clock, color: 'warning', bgColor: 'bg-gradient-warning' },
+    { title: 'Belum Bayar', value: santri.value.filter(s => s.status === 'Belum Bayar').length, icon: AlertCircle, color: 'danger', bgColor: 'bg-gradient-danger' },
+]);
 </script>
 
 <template>
     <Head title="Manajemen Santri - PPSB Al-Mukmin Ngruki" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="space-y-6">
+        <div class="container-fluid py-4">
             <!-- Header Section -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Manajemen Santri</h1>
-                    <p class="text-gray-600 dark:text-gray-400 mt-1">Kelola data santri PPSB Al-Mukmin Ngruki</p>
-                </div>
-                <div class="flex items-center space-x-3 mt-4 sm:mt-0">
-                    <button class="inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                        <Download class="w-4 h-4 mr-2" />
-                        Export
-                    </button>
-                    <button class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                        <Plus class="w-4 h-4 mr-2" />
-                        Tambah Santri
-                    </button>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <div class="row">
+                                <div class="col-6 d-flex align-items-center">
+                                    <h6 class="mb-0">Manajemen Santri</h6>
+                                    <p class="text-secondary text-sm mb-0 ms-2">Kelola data santri PPSB Al-Mukmin Ngruki</p>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <ArgonButton color="secondary" variant="outline" size="sm" class="me-2">
+                                        <Download class="me-2" />
+                                        Export
+                                    </ArgonButton>
+                                    <ArgonButton color="info" variant="gradient" size="sm">
+                                        <Plus class="me-2" />
+                                        Tambah Santri
+                                    </ArgonButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                            <Users class="w-6 h-6 text-blue-600" />
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Santri</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ santri.length }}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                            <div class="w-6 h-6 bg-green-500 rounded-full"></div>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Lunas</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ santri.filter(s => s.status === 'Lunas').length }}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
-                            <div class="w-6 h-6 bg-yellow-500 rounded-full"></div>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Pending</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ santri.filter(s => s.status === 'Pending').length }}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
-                            <div class="w-6 h-6 bg-red-500 rounded-full"></div>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Belum Bayar</p>
-                            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ santri.filter(s => s.status === 'Belum Bayar').length }}</p>
+            <div class="row">
+                <div v-for="stat in stats" :key="stat.title" class="col-xl-3 col-sm-6 mb-4">
+                    <div class="card">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="text-sm mb-0 text-capitalize font-weight-bold">{{ stat.title }}</p>
+                                        <h5 class="font-weight-bolder mb-0">{{ stat.value }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <div :class="`icon icon-shape ${stat.bgColor} shadow text-center border-radius-md`">
+                                        <component :is="stat.icon" class="text-lg opacity-10" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Filters -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-slate-700">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="relative">
-                        <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input
-                            v-model="searchQuery"
-                            type="text"
-                            placeholder="Cari nama atau NIS..."
-                            class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                        />
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <ArgonInput
+                                        v-model="searchQuery"
+                                        placeholder="Cari nama atau NIS..."
+                                        icon="fas fa-search"
+                                        size="sm"
+                                    />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <select
+                                        v-model="selectedStatus"
+                                        class="form-select form-select-sm"
+                                    >
+                                        <option value="all">Semua Status</option>
+                                        <option value="Lunas">Lunas</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Belum Bayar">Belum Bayar</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <select
+                                        v-model="selectedGelombang"
+                                        class="form-select form-select-sm"
+                                    >
+                                        <option value="all">Semua Gelombang</option>
+                                        <option value="Gelombang 1">Gelombang 1</option>
+                                        <option value="Gelombang 2">Gelombang 2</option>
+                                        <option value="Gelombang 3">Gelombang 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <select
-                        v-model="selectedStatus"
-                        class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                    >
-                        <option value="all">Semua Status</option>
-                        <option value="Lunas">Lunas</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Belum Bayar">Belum Bayar</option>
-                    </select>
-                    
-                    <select
-                        v-model="selectedGelombang"
-                        class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                    >
-                        <option value="all">Semua Gelombang</option>
-                        <option value="Gelombang 1">Gelombang 1</option>
-                        <option value="Gelombang 2">Gelombang 2</option>
-                        <option value="Gelombang 3">Gelombang 3</option>
-                    </select>
                 </div>
             </div>
 
             <!-- Table -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-gray-100 dark:border-slate-700 overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-gray-50 dark:bg-slate-700">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nama</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">NIS</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Gelombang</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tanggal Daftar</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">No. HP</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
-                            <tr v-for="item in filteredSantri" :key="item.id" class="hover:bg-gray-50 dark:hover:bg-slate-700">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ item.nama }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ item.nis }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ item.gelombang }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span :class="`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(item.status)}`">
-                                        {{ item.status }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ item.tanggal_daftar }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ item.no_hp }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex items-center space-x-2">
-                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
-                                            <Eye class="w-4 h-4" />
-                                        </button>
-                                        <button class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300">
-                                            <Edit class="w-4 h-4" />
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
-                                            <Trash2 class="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <h6>Data Santri</h6>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">NIS</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Gelombang</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal Daftar</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No. HP</th>
+                                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in filteredSantri" :key="item.id">
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div>
+                                                        <ArgonAvatar
+                                                            :img="`https://ui-avatars.com/api/?name=${item.nama}&background=random`"
+                                                            size="sm"
+                                                            class="me-3"
+                                                        />
+                                                    </div>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">{{ item.nama }}</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">{{ item.nis }}</p>
+                                            </td>
+                                            <td class="align-middle text-center text-sm">
+                                                <span class="badge badge-sm bg-gradient-secondary">{{ item.gelombang }}</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <ArgonBadge :color="getStatusColor(item.status)" variant="gradient" size="sm">
+                                                    <component :is="getStatusIcon(item.status)" class="me-1" />
+                                                    {{ item.status }}
+                                                </ArgonBadge>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">{{ item.tanggal_daftar }}</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">{{ item.no_hp }}</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <div class="btn-group" role="group">
+                                                    <ArgonButton color="info" variant="text" size="sm" class="mb-0">
+                                                        <Eye />
+                                                    </ArgonButton>
+                                                    <ArgonButton color="success" variant="text" size="sm" class="mb-0">
+                                                        <Edit />
+                                                    </ArgonButton>
+                                                    <ArgonButton color="danger" variant="text" size="sm" class="mb-0">
+                                                        <Trash2 />
+                                                    </ArgonButton>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Empty State -->
-                <div v-if="filteredSantri.length === 0" class="text-center py-12">
-                    <Users class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Tidak ada data santri</h3>
-                    <p class="text-gray-500 dark:text-gray-400">Coba ubah filter atau tambah santri baru.</p>
+            </div>
+
+            <!-- Empty State -->
+            <div v-if="filteredSantri.length === 0" class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body text-center py-5">
+                            <Users class="text-secondary mb-3" style="font-size: 3rem;" />
+                            <h6 class="text-dark mb-2">Tidak ada data santri</h6>
+                            <p class="text-secondary text-sm mb-0">Coba ubah filter atau tambah santri baru.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
