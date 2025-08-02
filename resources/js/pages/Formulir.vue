@@ -5,6 +5,7 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import PublicLayout from '@/layouts/PublicLayout.vue';
 
+
 interface FormData {
   unit: string;
   nama: string;
@@ -75,8 +76,6 @@ const localForm = reactive<FormData>({
   alamat_lengkap: '',
   kode_pos: '',
 });
-
-
 
 // State untuk dropdown alamat EMSIFA
 const provinsiList = ref<Array<{id: string, name: string}>>([]);
