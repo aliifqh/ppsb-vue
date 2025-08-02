@@ -399,7 +399,7 @@
 </script>
 
 <template>
-    <PublicLayout>
+    <PublicLayout class="-mt-38">
 
         <Head title="Formulir Pendaftaran Santri" />
 
@@ -425,8 +425,8 @@
 
         <!-- Main Form -->
         <div v-else
-            class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-8">
-            <div class="max-w-4xl mx-auto px-4">
+            class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 pt-40">
+            <div class="max-w-4xl mx-auto px-4 pt-8">
                 <!-- Header -->
                 <div class="text-center mb-8">
                     <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">

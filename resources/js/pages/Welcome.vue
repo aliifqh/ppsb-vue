@@ -39,13 +39,13 @@ onMounted(() => {
 </script>
 
 <template>
-    <PublicLayout>
+    <PublicLayout class="-mt-38">
         <Head title="Coming Soon - Website dalam Pembuatan">
             <link rel="preconnect" href="https://rsms.me/" />
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         </Head>
         
-        <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-6">
+        <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-6 pt-40">
             <!-- Background Pattern -->
             <div class="absolute inset-0 overflow-hidden">
                 <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>

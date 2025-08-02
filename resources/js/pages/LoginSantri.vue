@@ -1,7 +1,7 @@
 <template>
-  <PublicLayout>
-    <div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-md mx-auto">
+  <PublicLayout class="-mt-38">
+    <div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 pt-40">
+      <div class="max-w-md mx-auto pt-8">
         <div class="bg-white rounded-lg shadow-lg p-8">
           <h2 class="text-3xl font-bold text-center text-teal-700 mb-2">Cek Status Pendaftaran</h2>
           <p class="text-center text-gray-600 mb-6">Masukkan kode unik dan nama lengkap untuk melihat status pendaftaran Anda.</p>
@@ -43,7 +43,7 @@
             </button>
           </form>
           <div class="text-center mt-6">
-            <router-link to="/" class="font-medium text-teal-600 hover:text-teal-700 transition-colors">Kembali ke Beranda</router-link>
+            <Link href="/" class="font-medium text-teal-600 hover:text-teal-700 transition-colors">Kembali ke Beranda</Link>
           </div>
         </div>
       </div>
@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 import PublicLayout from '@/layouts/PublicLayout.vue';
 
 interface Errors {
