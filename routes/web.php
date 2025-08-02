@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\FormulirController;
+use App\Http\Controllers\Santri\SantriController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -25,10 +26,10 @@ Route::get('formulir/success/{nomorPendaftaran}', [FormulirController::class, 's
 
 // Santri Routes
 Route::prefix('santri')->name('santri.')->group(function () {
-    Route::get('login', [App\Http\Controllers\Santri\SantriController::class, 'login'])->name('login');
-    Route::post('check', [App\Http\Controllers\Santri\SantriController::class, 'check'])->name('check');
-    Route::get('dashboard/{nomor_pendaftaran}', [App\Http\Controllers\Santri\SantriController::class, 'dashboard'])->name('dashboard');
-    Route::post('logout', [App\Http\Controllers\Santri\SantriController::class, 'logout'])->name('logout');
+    Route::get('login', [SantriController::class, 'login'])->name('login');
+    Route::post('check', [SantriController::class, 'check'])->name('check');
+    Route::get('dashboard/{nomor_pendaftaran}', [SantriController::class, 'dashboard'])->name('dashboard');
+    Route::post('logout', [SantriController::class, 'logout'])->name('logout');
 });
 
 require __DIR__.'/settings.php';
