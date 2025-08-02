@@ -3,6 +3,10 @@ import { Head } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
 import { Coffee, Heart } from 'lucide-vue-next';
 import PublicLayout from '@/layouts/PublicLayout.vue';
+import { useFixedTheme } from '@/composables/useAppearance';
+
+// Force light theme for welcome page
+useFixedTheme('dark');
 
 // Animated text effect
 const animatedText = ref('Coming Soon');
@@ -41,7 +45,7 @@ onMounted(() => {
             <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         </Head>
         
-        <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center p-6">
+        <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-6">
             <!-- Background Pattern -->
             <div class="absolute inset-0 overflow-hidden">
                 <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
@@ -63,12 +67,12 @@ onMounted(() => {
 
                 <!-- Animated Coming Soon Text -->
                 <div class="mb-8">
-                    <h2 class="text-3xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4">
+                    <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-4">
                         <span class="inline-block min-w-[300px] text-left">
                             {{ animatedText }}<span v-if="isTyping" class="animate-pulse">|</span>
                         </span>
                     </h2>
-                    <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
                         Website kami sedang dalam tahap pengembangan yang serius. 
                         Tim developer kami sedang bekerja keras untuk memberikan pengalaman terbaik untuk Anda.
                     </p>
@@ -90,54 +94,54 @@ onMounted(() => {
 
                 <!-- Progress Bar -->
                 <div class="mb-12 max-w-md mx-auto">
-                    <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    <div class="flex justify-between text-sm text-gray-600 mb-2">
                         <span>Progress Development</span>
                         <span>60%</span>
                     </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                    <div class="w-full bg-gray-200 rounded-full h-3">
                         <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-1000 ease-out" style="width: 60%"></div>
                     </div>
                 </div>
 
                 <!-- Features Preview -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
-                    <div class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
-                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                    <div class="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
                             <span class="text-2xl">⚡</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 dark:text-white mb-2">Super Fast</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Website yang cepat dan responsif untuk pengalaman terbaik</p>
+                        <h3 class="font-semibold text-gray-800 mb-2">Super Fast</h3>
+                        <p class="text-sm text-gray-600">Website yang cepat dan responsif untuk pengalaman terbaik</p>
                     </div>
                     
-                    <div class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
-                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                    <div class="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
                             <span class="text-2xl">🎨</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 dark:text-white mb-2">Modern Design</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Desain modern dan elegan yang memukau</p>
+                        <h3 class="font-semibold text-gray-800 mb-2">Modern Design</h3>
+                        <p class="text-sm text-gray-600">Desain modern dan elegan yang memukau</p>
                     </div>
                     
-                    <div class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
-                        <div class="w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                    <div class="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/20">
+                        <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
                             <span class="text-2xl">🔒</span>
                         </div>
-                        <h3 class="font-semibold text-gray-800 dark:text-white mb-2">Secure</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Keamanan tingkat tinggi untuk data Anda</p>
+                        <h3 class="font-semibold text-gray-800 mb-2">Secure</h3>
+                        <p class="text-sm text-gray-600">Keamanan tingkat tinggi untuk data Anda</p>
                     </div>
                 </div>
 
                 <!-- Developer Credit -->
-                <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20 max-w-2xl mx-auto mb-8">
+                <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20 max-w-2xl mx-auto mb-8">
                     <div class="flex items-center justify-center mb-4">
                         <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mr-4">
                             <span class="text-2xl font-bold text-white">A</span>
                         </div>
                         <div class="text-left">
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-white">Aliifqh</h3>
-                            <p class="text-gray-600 dark:text-gray-400">Full Stack Developer</p>
+                            <h3 class="text-xl font-bold text-gray-800">Aliifqh</h3>
+                            <p class="text-gray-600">Full Stack Developer</p>
                         </div>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-400 text-center mb-6">
+                    <p class="text-gray-600 text-center mb-6">
                         "Membangun website yang luar biasa membutuhkan dedikasi, kreativitas, dan secangkir kopi yang tak terhitung jumlahnya. 
                         Stay tuned untuk sesuatu yang spektakuler! ✨"
                     </p>
@@ -157,10 +161,10 @@ onMounted(() => {
 
                     <!-- Footer -->
                     <div class="mt-8 text-center">
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                        <p class="text-sm text-gray-500 mb-2">
                             Dikembangkan dengan ❤️ oleh Aliifqh
                         </p>
-                        <p class="text-xs text-gray-400 dark:text-gray-500 italic">
+                        <p class="text-xs text-gray-400 italic">
                             "Kopi adalah bahasa universal developer. Setiap baris kode dibayar dengan secangkir kopi." 
                         </p>
                     </div>

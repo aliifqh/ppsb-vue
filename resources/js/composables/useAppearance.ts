@@ -1,20 +1,13 @@
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
-type Appearance = 'light' | 'dark' | 'system';
+type Appearance = 'light' | 'dark';
 
 export function updateTheme(value: Appearance) {
     if (typeof window === 'undefined') {
         return;
     }
 
-    if (value === 'system') {
-        const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
-        const systemTheme = mediaQueryList.matches ? 'dark' : 'light';
-
-        document.documentElement.classList.toggle('dark', systemTheme === 'dark');
-    } else {
-        document.documentElement.classList.toggle('dark', value === 'dark');
-    }
+    document.documentElement.classList.toggle('dark', value === 'dark');
 }
 
 const setCookie = (name: string, value: string, days = 365) => {
@@ -23,16 +16,7 @@ const setCookie = (name: string, value: string, days = 365) => {
     }
 
     const maxAge = days * 24 * 60 * 60;
-
     document.cookie = `${name}=${value};path=/;max-age=${maxAge};SameSite=Lax`;
-};
-
-const mediaQuery = () => {
-    if (typeof window === 'undefined') {
-        return null;
-    }
-
-    return window.matchMedia('(prefers-color-scheme: dark)');
 };
 
 const getStoredAppearance = () => {
@@ -43,26 +27,17 @@ const getStoredAppearance = () => {
     return localStorage.getItem('appearance') as Appearance | null;
 };
 
-const handleSystemThemeChange = () => {
-    const currentAppearance = getStoredAppearance();
-
-    updateTheme(currentAppearance || 'system');
-};
-
 export function initializeTheme() {
     if (typeof window === 'undefined') {
         return;
     }
 
-    // Initialize theme from saved preference or default to system...
+    // Initialize theme from saved preference or default to light
     const savedAppearance = getStoredAppearance();
-    updateTheme(savedAppearance || 'system');
-
-    // Set up system theme change listener...
-    mediaQuery()?.addEventListener('change', handleSystemThemeChange);
+    updateTheme(savedAppearance || 'light');
 }
 
-const appearance = ref<Appearance>('system');
+const appearance = ref<Appearance>('light');
 
 export function useAppearance() {
     onMounted(() => {
@@ -76,17 +51,49 @@ export function useAppearance() {
     function updateAppearance(value: Appearance) {
         appearance.value = value;
 
-        // Store in localStorage for client-side persistence...
+        // Store in localStorage for client-side persistence
         localStorage.setItem('appearance', value);
 
-        // Store in cookie for SSR...
+        // Store in cookie for SSR
         setCookie('appearance', value);
 
         updateTheme(value);
     }
 
+    function toggleAppearance() {
+        const newValue = appearance.value === 'light' ? 'dark' : 'light';
+        updateAppearance(newValue);
+    }
+
     return {
         appearance,
         updateAppearance,
+        toggleAppearance,
     };
 }
+
+// Simple composable for fixed theme pages
+export function useFixedTheme(fixedTheme: Appearance) {
+    let originalTheme: string | null = null;
+
+    onMounted(() => {
+        // Store original theme
+        originalTheme = localStorage.getItem('appearance');
+        
+        // Force fixed theme
+        document.documentElement.classList.remove('dark', 'light');
+        document.documentElement.classList.add(fixedTheme);
+    });
+
+    onUnmounted(() => {
+        // Restore original theme when leaving the page
+        if (originalTheme) {
+            document.documentElement.classList.remove('dark', 'light');
+            document.documentElement.classList.add(originalTheme);
+        }
+    });
+
+    return {
+        currentTheme: fixedTheme
+    };
+} 

@@ -27,4 +27,4 @@ const breadcrumbItems: BreadcrumbItem[] = [
             </div>
         </SettingsLayout>
     </AppLayout>
-</template>
+</template> 
