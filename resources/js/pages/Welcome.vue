@@ -6,7 +6,7 @@ import PublicLayout from '@/layouts/PublicLayout.vue';
 import { useFixedTheme } from '@/composables/useAppearance';
 
 // Force light theme for welcome page
-useFixedTheme('dark');
+useFixedTheme('light');
 
 // Animated text effect
 const animatedText = ref('Coming Soon');

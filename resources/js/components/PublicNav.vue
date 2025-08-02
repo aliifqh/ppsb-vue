@@ -69,8 +69,11 @@ const page = usePage();
                 <div class="flex items-center space-x-2">
                     <Link 
                         href="/" 
-                        class="flex items-center space-x-2 px-6 py-3 text-[#2A6061] font-medium rounded-xl transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
-                        :class="{ 'bg-[#2A6061] text-white shadow-lg': page.url === '/' }"
+                        class="flex items-center space-x-2 px-6 py-3 font-medium rounded-xl transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
+                        :class="{ 
+                            'bg-[#2A6061] text-white shadow-lg border border-[#2A6061]': page.url === '/',
+                            'text-[#2A6061] border border-[#2A6061]/20 bg-[#2A6061]/5': page.url !== '/'
+                        }"
                     >
                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
@@ -81,8 +84,11 @@ const page = usePage();
                     
                     <Link 
                         href="/formulir" 
-                        class="flex items-center space-x-2 px-6 py-3 text-[#2A6061] font-medium rounded-xl transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
-                        :class="{ 'bg-[#2A6061] text-white shadow-lg': page.url === '/formulir' }"
+                        class="flex items-center space-x-2 px-6 py-3 font-medium rounded-xl transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
+                        :class="{ 
+                            'bg-[#2A6061] text-white shadow-lg border border-[#2A6061]': page.url === '/formulir',
+                            'text-[#2A6061] border border-[#2A6061]/20 bg-[#2A6061]/5': page.url !== '/formulir'
+                        }"
                     >
                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
@@ -96,8 +102,11 @@ const page = usePage();
                     
                     <Link 
                         href="/santri/login" 
-                        class="flex items-center space-x-2 px-6 py-3 text-[#2A6061] font-medium rounded-xl transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
-                        :class="{ 'bg-[#2A6061] text-white shadow-lg': page.url.startsWith('/santri') }"
+                        class="flex items-center space-x-2 px-6 py-3 font-medium rounded-xl transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
+                        :class="{ 
+                            'bg-[#2A6061] text-white shadow-lg border border-[#2A6061]': page.url.startsWith('/santri'),
+                            'text-[#2A6061] border border-[#2A6061]/20 bg-[#2A6061]/5': !page.url.startsWith('/santri')
+                        }"
                     >
                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M9 11l3 3L22 4"/>
@@ -144,8 +153,11 @@ const page = usePage();
                     <div class="flex items-center space-x-1 sm:space-x-2">
                         <Link 
                             href="/" 
-                            class="flex flex-col items-center justify-center w-16 h-14 sm:w-18 sm:h-16 text-[#2A6061] font-medium rounded-lg transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
-                            :class="{ 'bg-[#2A6061] text-white shadow-lg': page.url === '/' }"
+                            class="flex flex-col items-center justify-center w-16 h-14 sm:w-18 sm:h-16 font-medium rounded-lg transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
+                            :class="{ 
+                                'bg-[#2A6061] text-white shadow-lg border border-[#2A6061]': page.url === '/',
+                                'text-[#2A6061] border border-[#2A6061]/20 bg-[#2A6061]/5': page.url !== '/'
+                            }"
                         >
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
@@ -156,8 +168,11 @@ const page = usePage();
                         
                         <Link 
                             href="/formulir" 
-                            class="flex flex-col items-center justify-center w-16 h-14 sm:w-18 sm:h-16 text-[#2A6061] font-medium rounded-lg transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
-                            :class="{ 'bg-[#2A6061] text-white shadow-lg': page.url === '/formulir' }"
+                            class="flex flex-col items-center justify-center w-16 h-14 sm:w-18 sm:h-16 font-medium rounded-lg transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
+                            :class="{ 
+                                'bg-[#2A6061] text-white shadow-lg border border-[#2A6061]': page.url === '/formulir',
+                                'text-[#2A6061] border border-[#2A6061]/20 bg-[#2A6061]/5': page.url !== '/formulir'
+                            }"
                         >
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
@@ -171,8 +186,11 @@ const page = usePage();
                         
                         <Link 
                             href="/santri/login" 
-                            class="flex flex-col items-center justify-center w-16 h-14 sm:w-18 sm:h-16 text-[#2A6061] font-medium rounded-lg transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
-                            :class="{ 'bg-[#2A6061] text-white shadow-lg': page.url.startsWith('/santri') }"
+                            class="flex flex-col items-center justify-center w-16 h-14 sm:w-18 sm:h-16 font-medium rounded-lg transition-all duration-300 hover:bg-[#2A6061] hover:text-white hover:shadow-lg hover:-translate-y-0.5"
+                            :class="{ 
+                                'bg-[#2A6061] text-white shadow-lg border border-[#2A6061]': page.url.startsWith('/santri'),
+                                'text-[#2A6061] border border-[#2A6061]/20 bg-[#2A6061]/5': !page.url.startsWith('/santri')
+                            }"
                         >
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M9 11l3 3L22 4"/>

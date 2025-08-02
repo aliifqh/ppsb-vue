@@ -339,10 +339,6 @@
         try {
             // Get CSRF token from meta tag or use default
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-
-            // Debug: log data yang akan dikirim
-            console.log('Data yang akan dikirim:', localForm);
-
             const response = await fetch('/formulir', {
                 method: 'POST',
                 headers: {
